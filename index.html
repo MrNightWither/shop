@@ -20,7 +20,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/rajdhani-700.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="shop.css?v=20260910e">
+<link rel="stylesheet" href="shop.css?v=20260911a">
 </head>
 <body>
 
@@ -159,7 +159,12 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
   </button>
   <div class="p-media">
-    <div class="p-main"><img id="pImg" alt=""></div>
+    <div class="p-main" id="pMain">
+      <img id="pImg" alt="">
+      <span class="p-zoom-hint" id="pZoomHint" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15L21 21"/><path d="M10 7v6M7 10h6"/></svg>
+      </span>
+    </div>
     <div class="p-thumbs" id="pThumbs"></div>
   </div>
   <div class="p-body">
@@ -171,6 +176,10 @@
     <button class="btn-gold wide" id="pAdd" type="button">In den Warenkorb</button>
     <p class="p-msg" id="pMsg" role="status"></p>
     <div class="p-desc" id="pDesc"></div>
+    <div class="p-related" id="pRelated" hidden>
+      <p class="p-related-label">Passt auch dazu</p>
+      <div class="p-related-list" id="pRelatedList"></div>
+    </div>
   </div>
 </div>
 
@@ -192,6 +201,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="shop.js?v=20260910e"></script>
+<script src="shop.js?v=20260911a"></script>
 </body>
 </html>

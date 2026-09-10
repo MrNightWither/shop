@@ -305,8 +305,23 @@ function soonCard(cat, index, total) {
   return card;
 }
 
+// Platzhalterkarten, solange die Antwort von Shopify noch aussteht
+function renderSkeleton() {
+  const grid = $('grid');
+  grid.setAttribute('aria-busy', 'true');
+  const cards = Array.from({ length: 6 }, () => {
+    const card = el('div', 'card skel');
+    card.append(el('div', 'card-media'));
+    card.append(el('div', 'skel-line'));
+    card.append(el('div', 'skel-line price'));
+    return card;
+  });
+  grid.replaceChildren(...cards);
+}
+
 function renderGrid(animate) {
   const grid = $('grid');
+  grid.removeAttribute('aria-busy');
   $('collDiscord').hidden = state.live;
   let cards;
   if (state.live) {
@@ -386,10 +401,13 @@ function openProduct(handle, opener) {
   taxNote($('pTax'));
   renderGallery(p, 0);
   renderOptions();
+  renderRelated(p);
   openLayer($('product'), opener);
 }
 
 function renderGallery(p, index, variantImage) {
+  $('pMain').classList.remove('zoomed');
+  $('pImg').style.transform = '';
   const list = p.images.nodes.slice();
   let active = index;
   if (variantImage) {
@@ -455,6 +473,75 @@ function renderOptions() {
   const ok = !!(v && v.availableForSale);
   add.disabled = !ok;
   add.textContent = ok ? 'In den Warenkorb' : (v ? 'Ausverkauft' : 'Nicht verfügbar');
+}
+
+// Andere Produkte derselben Kategorie, aus bereits geladenen Daten
+function renderRelated(p) {
+  const wrap = $('pRelated');
+  const list = $('pRelatedList');
+  const picks = state.products
+    .filter((x) => x.handle !== p.handle && x._cat === p._cat && x.availableForSale)
+    .slice(0, 3);
+  if (!picks.length) {
+    wrap.hidden = true;
+    list.replaceChildren();
+    return;
+  }
+  list.replaceChildren(...picks.map((rp) => {
+    const b = el('button', 'p-related-item');
+    b.type = 'button';
+    const first = rp.images.nodes[0] && img(rp.images.nodes[0].url, 220);
+    const i = document.createElement('img');
+    i.src = first || 'crown.webp';
+    i.alt = '';
+    i.loading = 'lazy';
+    if (!first) i.classList.add('ph');
+    b.append(i, el('p', '', rp.title), el('p', 'price', money(rp.priceRange.minVariantPrice)));
+    b.setAttribute('aria-label', `${rp.title}, ${money(rp.priceRange.minVariantPrice)}`);
+    b.addEventListener('click', () => openProduct(rp.handle, b));
+    return b;
+  }));
+  wrap.hidden = false;
+}
+
+// Zum Zoomen antippen, im gezoomten Zustand per Ziehen verschieben
+function initImageZoom() {
+  const main = $('pMain');
+  const image = $('pImg');
+  let dragging = false;
+  let moved = false;
+  let startX = 0;
+  let startY = 0;
+  let curX = 0;
+  let curY = 0;
+
+  main.addEventListener('click', () => {
+    if (moved) { moved = false; return; }
+    if (main.classList.contains('zoomed')) {
+      main.classList.remove('zoomed');
+      image.style.transform = '';
+      curX = 0; curY = 0;
+    } else {
+      main.classList.add('zoomed');
+    }
+  });
+  main.addEventListener('pointerdown', (e) => {
+    if (!main.classList.contains('zoomed')) return;
+    dragging = true;
+    startX = e.clientX - curX;
+    startY = e.clientY - curY;
+    main.setPointerCapture(e.pointerId);
+  });
+  main.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    moved = true;
+    const max = 70;
+    curX = Math.max(-max, Math.min(max, e.clientX - startX));
+    curY = Math.max(-max, Math.min(max, e.clientY - startY));
+    image.style.transform = `scale(2) translate(${curX / 2}px, ${curY / 2}px)`;
+  });
+  main.addEventListener('pointerup', () => { dragging = false; });
+  main.addEventListener('pointercancel', () => { dragging = false; });
 }
 
 /* ---------- Warenkorb ---------- */
@@ -763,8 +850,12 @@ function init() {
   if (!reduceMotion && !sessionStorage.getItem('nwu_intro')) {
     document.body.classList.add('intro');
     sessionStorage.setItem('nwu_intro', '1');
+    // Nach Ablauf der Introsequenz wieder entfernen, sonst konkurriert
+    // ein Überfahren mit der Maus mit der Introanimation um denselben Namen.
+    setTimeout(() => document.body.classList.remove('intro'), 4200);
   }
   applyPolicies();
+  renderSkeleton();
   sparks();
   heroDepth();
   storyWords();
@@ -772,6 +863,7 @@ function init() {
   revealer.observe(document.querySelector('.steps'));
   startCountdown();
   loadProducts();
+  initImageZoom();
 
   const bar = $('bar');
   const onScroll = () => bar.classList.toggle('scrolled', window.scrollY > 10);
