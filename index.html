@@ -12,7 +12,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/rajdhani-700.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="shop.css?v=20260910b">
+<link rel="stylesheet" href="shop.css?v=20260910d">
 </head>
 <body>
 
@@ -54,6 +54,11 @@
     <a class="btn-gold" href="#kollektion">Kollektion ansehen</a>
   </section>
 
+  <div class="tapes" aria-hidden="true">
+    <div class="tape tape-back"><div class="tape-track" id="tapeBack"></div></div>
+    <div class="tape tape-front"><div class="tape-track" id="tapeFront"></div></div>
+  </div>
+
   <nav class="cats" aria-label="Kategorien">
     <div class="cats-track" id="cats" role="list"></div>
   </nav>
@@ -64,6 +69,15 @@
       <p class="coll-meta" id="collMeta" aria-live="polite"></p>
     </div>
     <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="steps" aria-labelledby="stepsTitle">
+    <h2 id="stepsTitle">So entsteht dein Teil</h2>
+    <ol class="steps-list">
+      <li><span class="step-no" aria-hidden="true">01</span><h3>Du bestellst</h3><p>Größe wählen, in den Warenkorb, sicher über Shopify bezahlen.</p></li>
+      <li><span class="step-no" aria-hidden="true">02</span><h3>Es wird gedruckt</h3><p>Erst jetzt wird dein Teil für dich produziert. Nichts liegt auf Halde.</p></li>
+      <li><span class="step-no" aria-hidden="true">03</span><h3>Es kommt zu dir</h3><p>Verpackt und direkt an deine Adresse verschickt.</p></li>
+    </ol>
   </section>
 
   <section class="drop" id="drop" hidden aria-labelledby="dropTitle">
@@ -82,7 +96,7 @@
     </blockquote>
     <div class="story-text">
       <p>NightWither ist in langen Nächten im Stream entstanden. Zwischen Witzen mit dem Team und Gesprächen mit denen, die nach einem langen Tag nicht abschalten können.</p>
-      <p>Die Kollektion trägt diese Nächte nach draußen. Gedruckt wird auf Bestellung, damit nichts auf Halde liegt und jedes Teil für dich entsteht.</p>
+      <p>Die Kollektion trägt diese Nächte nach draußen. Für alle, die schon dazugehören, und für alle, die es noch werden.</p>
     </div>
   </section>
 
@@ -169,6 +183,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="shop.js?v=20260910b"></script>
+<script src="shop.js?v=20260910d"></script>
 </body>
 </html>

@@ -233,15 +233,75 @@ function productCard(p) {
   return card;
 }
 
-function soonCard(cat) {
+// Linienzeichnungen für die Platzhalter, eigene Formen im Stil der Marke
+const ICONS = {
+  hoodies: [
+    'M31 28 C31 12 69 12 69 28 C63 38 37 38 31 28 Z',
+    'M31 28 L18 36 L11 70 L22 72 L27 50 L27 88 L73 88 L73 50 L78 72 L89 70 L82 36 L69 28',
+    'M45 36 V50 M55 36 V50',
+    'M37 64 H63 L59 78 H41 Z'
+  ],
+  shirts: [
+    'M35 18 L18 27 L9 44 L22 50 L27 41 L27 86 L73 86 L73 41 L78 50 L91 44 L82 27 L65 18',
+    'M35 18 C39 27 61 27 65 18',
+    'M42 50 L46 44 L50 50 L54 44 L58 50 V58 H42 Z'
+  ],
+  caps: [
+    'M20 62 C20 32 80 32 80 62 Z',
+    'M20 62 C42 57 76 59 95 71 C72 74 40 71 20 62',
+    'M50 34 V62 M35 40 C40 48 41 55 40 61 M65 40 C60 48 59 55 60 61',
+    'M48 34 A2 2 0 1 0 52 34 A2 2 0 1 0 48 34'
+  ],
+  bundles: [
+    'M18 44 L50 30 L82 44 L82 78 L50 92 L18 78 Z',
+    'M18 44 L50 58 L82 44 M50 58 V92',
+    'M34 20 L66 34 M40 17 L72 31',
+    'M27 66 L30 72 L34 64 L38 72 L41 66 V76 L27 71 Z'
+  ],
+  handtuecher: [
+    'M42 14 C42 6 58 6 58 14 V22',
+    'M22 24 H78 V86 C78 90 22 90 22 86 Z',
+    'M22 34 H78',
+    'M22 70 H78 M22 75 H78',
+    'M30 88 V93 M40 89 V94 M50 89 V94 M60 89 V94 M70 88 V93'
+  ],
+  bandanas: [
+    'M13 32 H87 L50 88 Z',
+    'M13 32 L4 25 M13 32 L6 41 M87 32 L96 25 M87 32 L94 41',
+    'M45 48 A5 5 0 1 0 55 48 A5 5 0 1 0 45 48',
+    'M33 40 A2.5 2.5 0 1 0 38 40 A2.5 2.5 0 1 0 33 40 M62 40 A2.5 2.5 0 1 0 67 40 A2.5 2.5 0 1 0 62 40 M47.5 66 A2.5 2.5 0 1 0 52.5 66 A2.5 2.5 0 1 0 47.5 66'
+  ],
+  schals: [
+    'M28 20 A22 7 0 1 0 72 20 A22 7 0 1 0 28 20',
+    'M28 20 C24 46 32 60 28 86 M72 20 C76 46 68 60 72 86',
+    'M28 86 A22 7 0 0 0 72 86',
+    'M31 44 C41 38 59 50 69 44 M30 62 C40 56 60 68 70 62'
+  ]
+};
+
+function icon(id) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 100 100');
+  svg.setAttribute('class', 'ico');
+  svg.setAttribute('aria-hidden', 'true');
+  (ICONS[id] || []).forEach((d, i) => {
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('pathLength', '1');
+    path.style.transitionDelay = `${i * 0.22}s`;
+    svg.append(path);
+  });
+  return svg;
+}
+
+function soonCard(cat, index, total) {
   const card = el('div', 'card soon');
+  if (total > 1 && cat.id === 'hoodies') card.classList.add('wide');
+  if (total > 1 && cat.id === 'schals') card.classList.add('wide-desk');
   const media = el('div', 'card-media');
-  const i = document.createElement('img');
-  i.src = 'crown.webp'; i.alt = '';
-  media.append(i, el('span', 'soon-name', cat.label));
-  const info = el('div', 'card-info');
-  info.append(el('p', 'card-type', 'Bald erhältlich'));
-  card.append(media, info);
+  media.append(icon(cat.id), el('span', 'soon-tag', 'Bald'), el('span', 'soon-name', cat.label));
+  card.append(media);
   return card;
 }
 
@@ -263,11 +323,13 @@ function renderGrid(animate) {
     }
   } else {
     const cats = CATEGORIES.filter((c) => c.id !== 'alle' && (state.filter === 'alle' || c.id === state.filter));
-    cards = cats.map(soonCard);
+    cards = cats.map((c, i) => soonCard(c, i, cats.length));
     $('collMeta').textContent = 'Der erste Drop ist in Vorbereitung.';
   }
   grid.classList.remove('swap');
   grid.replaceChildren(...cards);
+  grid.querySelectorAll('.soon').forEach((c) => revealer.observe(c));
+  if (finePointer) grid.querySelectorAll('.card:not(.soon)').forEach(tilt);
   if (animate && !reduceMotion) {
     void grid.offsetWidth;
     grid.classList.add('swap');
@@ -575,9 +637,109 @@ function sparks() {
   draw();
 }
 
+/* ---------- Bewegung ---------- */
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion;
+
+const revealer = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add(e.target.classList.contains('steps') ? 'in' : 'drawn'); revealer.unobserve(e.target); }
+  });
+}, { threshold: 0.35 }) : { observe: (n) => n.classList.add('drawn', 'in'), unobserve() {} };
+
+function tilt(card) {
+  const media = card.querySelector('.card-media');
+  card.addEventListener('pointermove', (e) => {
+    const r = media.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width;
+    const y = (e.clientY - r.top) / r.height;
+    media.style.setProperty('--ry', `${(x - 0.5) * 9}deg`);
+    media.style.setProperty('--rx', `${(0.5 - y) * 9}deg`);
+    media.style.setProperty('--mx', `${x * 100}%`);
+    media.style.setProperty('--my', `${y * 100}%`);
+  });
+  card.addEventListener('pointerleave', () => {
+    media.style.setProperty('--rx', '0deg');
+    media.style.setProperty('--ry', '0deg');
+  });
+}
+
+function buildTapes() {
+  const words = state.live
+    ? ['Jetzt im Shop', 'Streetwear aus der Nacht', 'Auf Bestellung gedruckt']
+    : ['Erster Drop in Vorbereitung', 'Streetwear aus der Nacht', 'Bald im Shop'];
+  const cats = CATEGORIES.filter((c) => c.id !== 'alle').map((c) => c.label);
+  const fill = (id, list) => {
+    const track = $(id);
+    const items = [];
+    for (let round = 0; round < 2; round++) {
+      for (let k = 0; k < 2; k++) {
+        list.forEach((w) => {
+          const sp = el('span', '', w);
+          const cr = document.createElement('img');
+          cr.src = 'crown.webp'; cr.alt = '';
+          sp.append(cr);
+          items.push(sp);
+        });
+      }
+    }
+    track.replaceChildren(...items);
+  };
+  fill('tapeFront', words);
+  fill('tapeBack', cats);
+}
+
+function heroDepth() {
+  if (reduceMotion) return;
+  const hero = document.querySelector('.hero');
+  let px = 0, py = 0, tx = 0, ty = 0, raf = 0;
+  const loop = () => {
+    tx += (px - tx) * 0.08; ty += (py - ty) * 0.08;
+    hero.style.setProperty('--px', tx.toFixed(3));
+    hero.style.setProperty('--py', ty.toFixed(3));
+    raf = (Math.abs(px - tx) > 0.001 || Math.abs(py - ty) > 0.001) ? requestAnimationFrame(loop) : 0;
+  };
+  if (finePointer) {
+    window.addEventListener('pointermove', (e) => {
+      px = e.clientX / window.innerWidth - 0.5;
+      py = e.clientY / window.innerHeight - 0.5;
+      if (!raf) raf = requestAnimationFrame(loop);
+    }, { passive: true });
+  }
+  const onScroll = () => {
+    const y = Math.min(window.scrollY, window.innerHeight);
+    hero.style.setProperty('--sy', y.toFixed(0));
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+function storyWords() {
+  const p = document.querySelector('.story-quote p');
+  const words = p.textContent.trim().split(/\s+/);
+  p.replaceChildren();
+  const spans = words.map((w, i) => {
+    const sp = el('span', 'w', w);
+    p.append(sp);
+    if (i < words.length - 1) p.append(' ');
+    return sp;
+  });
+  if (reduceMotion) { spans.forEach((s) => s.classList.add('lit')); return; }
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const r = p.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const progress = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.5)));
+    const n = Math.round(progress * spans.length);
+    spans.forEach((s, i) => s.classList.toggle('lit', i < n));
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+}
+
 /* ---------- Start ---------- */
 async function loadProducts() {
-  if (!CONFIG.token) { renderCats(); renderGrid(false); return; }
+  if (!CONFIG.token) { renderCats(); renderGrid(false); buildTapes(); return; }
   try {
     const data = await gql(PRODUCTS_QUERY);
     const s = data.shop || {};
@@ -592,6 +754,7 @@ async function loadProducts() {
   }
   renderCats();
   renderGrid(false);
+  buildTapes();
   loadCart();
 }
 
@@ -602,6 +765,10 @@ function init() {
   }
   applyPolicies();
   sparks();
+  heroDepth();
+  storyWords();
+  buildTapes();
+  revealer.observe(document.querySelector('.steps'));
   startCountdown();
   loadProducts();
 
