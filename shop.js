@@ -307,6 +307,7 @@ function soonCard(cat, index, total) {
 
 function renderGrid(animate) {
   const grid = $('grid');
+  $('collDiscord').hidden = state.live;
   let cards;
   if (state.live) {
     const list = state.filter === 'alle' ? state.products : state.products.filter((p) => p._cat === state.filter);

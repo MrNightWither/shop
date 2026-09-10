@@ -7,12 +7,20 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https://cdn.shopify.com; font-src 'self'; connect-src https://nightwither.myshopify.com; base-uri 'none'; form-action 'none'">
 <title>NightWither Shop</title>
 <meta name="description" content="Streetwear von NightWither Unity: Hoodies, Shirts, Caps, Bundles, Handtücher, Bandanas und Multifunktionsschals.">
+<meta property="og:title" content="NightWither Shop">
+<meta property="og:description" content="Streetwear von NightWither Unity: Hoodies, Shirts, Caps, Bundles, Handtücher, Bandanas und Multifunktionsschals.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shop.nightwither.de/">
+<meta property="og:image" content="https://shop.nightwither.de/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#000000">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/rajdhani-700.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="shop.css?v=20260910d">
+<link rel="stylesheet" href="shop.css?v=20260910e">
 </head>
 <body>
 
@@ -39,7 +47,7 @@
 
   <section class="hero" aria-labelledby="heroTitle">
     <div class="hero-mark">
-      <img class="hero-crown" src="crown.webp" alt="Goldene Krone von NightWither" width="261" height="287">
+      <img class="hero-crown" src="crown.webp" alt="Goldene Krone von NightWither" width="261" height="287" fetchpriority="high">
       <svg class="drips" viewBox="0 0 261 420" aria-hidden="true">
         <path class="drip d1" d="M156 280 V380"/><circle class="drop d1" cx="156" cy="388" r="5"/>
         <path class="drip d2" d="M116 262 V330"/><circle class="drop d2" cx="116" cy="336" r="4"/>
@@ -68,6 +76,7 @@
       <h2 id="collTitle">Kollektion</h2>
       <p class="coll-meta" id="collMeta" aria-live="polite"></p>
     </div>
+    <p class="coll-discord" id="collDiscord" hidden>Als Erstes vom Drop erfahren? Komm auf den <a href="https://discord.nightwither.de" target="_blank" rel="noopener noreferrer">Discord Server</a>.</p>
     <div class="grid" id="grid"></div>
   </section>
 
@@ -183,6 +192,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="shop.js?v=20260910d"></script>
+<script src="shop.js?v=20260910e"></script>
 </body>
 </html>
