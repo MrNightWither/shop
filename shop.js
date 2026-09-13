@@ -20,14 +20,14 @@ const CATEGORIES = [
   { id: 'alle', label: 'Alle' },
   { id: 'hoodies', label: 'Hoodies', match: ['hoodie', 'kapuzen'] },
   { id: 'shirts', label: 'Shirts', match: ['shirt'] },
-  { id: 'caps', label: 'Caps', match: ['cap', 'kappe', 'mütze', 'beanie'] },
+  { id: 'caps', label: 'Caps', match: ['cap', 'kappe'] },
   { id: 'bundles', label: 'Bundles', match: ['bundle', 'paket'] },
-  { id: 'handtuecher', label: 'Handtücher', match: ['handtuch', 'towel'] },
-  { id: 'bandanas', label: 'Bandanas', match: ['bandana'] },
-  { id: 'schals', label: 'Schals', match: ['multifunktion', 'schal', 'neck gaiter', 'tube'] }
+  { id: 'jacken', label: 'Jacken', match: ['jacke', 'jacket', 'bomber', 'windbreaker'] },
+  { id: 'kopfsache', label: 'Kopfsache', match: ['schal', 'multifunktion', 'neck gaiter', 'tube', 'mütze', 'beanie'] },
+  { id: 'accessoires', label: 'Accessoires', match: ['bandana'] }
 ];
 // Bundles zuerst prüfen, sonst landet ein "Hoodie Bundle" bei den Hoodies
-const MATCH_ORDER = ['bundles', 'schals', 'bandanas', 'handtuecher', 'hoodies', 'caps', 'shirts'];
+const MATCH_ORDER = ['bundles', 'accessoires', 'kopfsache', 'jacken', 'hoodies', 'caps', 'shirts'];
 
 const POLICY_FALLBACK = {
   terms: 'https://nightwither.myshopify.com/policies/terms-of-service',
@@ -247,10 +247,11 @@ const ICONS = {
     'M42 50 L46 44 L50 50 L54 44 L58 50 V58 H42 Z'
   ],
   caps: [
-    'M20 62 C20 32 80 32 80 62 Z',
-    'M20 62 C42 57 76 59 95 71 C72 74 40 71 20 62',
-    'M50 34 V62 M35 40 C40 48 41 55 40 61 M65 40 C60 48 59 55 60 61',
-    'M48 34 A2 2 0 1 0 52 34 A2 2 0 1 0 48 34'
+    'M20 62 C20 38 38 28 56 30 C70 32 76 44 76 58',
+    'M76 58 C85 58 94 62 94 66 C94 69 86 69 76 66',
+    'M20 62 C38 64 60 66 76 66',
+    'M52 30 C56 42 57 54 56 65 M51 27 A3 3 0 1 0 57 27 A3 3 0 1 0 51 27',
+    'M30 54 L32 45 L36 49 L38 42 L40 49 L44 45 L46 54 Z'
   ],
   bundles: [
     'M18 44 L50 30 L82 44 L82 78 L50 92 L18 78 Z',
@@ -258,24 +259,26 @@ const ICONS = {
     'M34 20 L66 34 M40 17 L72 31',
     'M27 66 L30 72 L34 64 L38 72 L41 66 V76 L27 71 Z'
   ],
-  handtuecher: [
-    'M42 14 C42 6 58 6 58 14 V22',
-    'M22 24 H78 V86 C78 90 22 90 22 86 Z',
-    'M22 34 H78',
-    'M22 70 H78 M22 75 H78',
-    'M30 88 V93 M40 89 V94 M50 89 V94 M60 89 V94 M70 88 V93'
+  jacken: [
+    'M32 24 L18 33 L10 62 L23 66 L28 48 L28 90 L72 90 L72 48 L77 66 L90 62 L82 33 L68 24',
+    'M40 24 L35 13 M60 24 L65 13',
+    'M50 24 V90',
+    'M33 55 H43 M57 55 H67'
   ],
-  bandanas: [
-    'M13 32 H87 L50 88 Z',
-    'M13 32 L4 25 M13 32 L6 41 M87 32 L96 25 M87 32 L94 41',
-    'M45 48 A5 5 0 1 0 55 48 A5 5 0 1 0 45 48',
-    'M33 40 A2.5 2.5 0 1 0 38 40 A2.5 2.5 0 1 0 33 40 M62 40 A2.5 2.5 0 1 0 67 40 A2.5 2.5 0 1 0 62 40 M47.5 66 A2.5 2.5 0 1 0 52.5 66 A2.5 2.5 0 1 0 47.5 66'
+  kopfsache: [
+    'M34 40 C34 17 66 17 66 40',
+    'M32 40 H68 V48 H32 Z',
+    'M41 40 V48 M50 40 V48 M59 40 V48',
+    'M36 48 C36 61 44 66 50 66 C56 66 64 61 64 48',
+    'M35 69 C42 74 58 74 65 69 M38 71 L50 90 L62 71',
+    'M20 95 C22 81 30 75 36 72 M80 95 C78 81 70 75 64 72'
   ],
-  schals: [
-    'M28 20 A22 7 0 1 0 72 20 A22 7 0 1 0 28 20',
-    'M28 20 C24 46 32 60 28 86 M72 20 C76 46 68 60 72 86',
-    'M28 86 A22 7 0 0 0 72 86',
-    'M31 44 C41 38 59 50 69 44 M30 62 C40 56 60 68 70 62'
+  accessoires: [
+    'M24 22 A10 10 0 1 0 44 22 A10 10 0 1 0 24 22',
+    'M41 29 L55 45',
+    'M42 42 H74 V88 H42 Z',
+    'M55 50 A3 3 0 1 0 61 50 A3 3 0 1 0 55 50',
+    'M48 76 L50 63 L55 69 L58 59 L61 69 L66 63 L68 76 Z'
   ]
 };
 
@@ -298,7 +301,7 @@ function icon(id) {
 function soonCard(cat, index, total) {
   const card = el('div', 'card soon');
   if (total > 1 && cat.id === 'hoodies') card.classList.add('wide');
-  if (total > 1 && cat.id === 'schals') card.classList.add('wide-desk');
+  if (total > 1 && cat.id === 'accessoires') card.classList.add('wide-desk');
   const media = el('div', 'card-media');
   media.append(icon(cat.id), el('span', 'soon-tag', 'Bald'), el('span', 'soon-name', cat.label));
   card.append(media);
@@ -662,7 +665,7 @@ function renderCart() {
 function safeCheckout(url) {
   try {
     const u = new URL(url);
-    const ok = u.protocol === 'https:' && (u.hostname.endsWith('.myshopify.com') || u.hostname.endsWith('nightwither.de') || u.hostname.endsWith('.shopify.com'));
+    const ok = u.protocol === 'https:' && (u.hostname.endsWith('.myshopify.com') || u.hostname === 'nightwither.de' || u.hostname.endsWith('.nightwither.de') || u.hostname.endsWith('.shopify.com'));
     return ok ? u.href : null;
   } catch (e) { return null; }
 }

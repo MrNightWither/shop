@@ -446,7 +446,7 @@ body::after {
 
 /* Hero: Tiefe beim Bewegen und Scrollen */
 .hero { position: relative; min-height: calc(100svh - 72px - clamp(70px, 9vw, 110px)); }
-.soon.wide .soon-name, .soon.wide-desk .soon-name { font-size: clamp(2.4rem, 5.6vw, 5rem); }
+.soon.wide .soon-name { font-size: clamp(2.4rem, 5.6vw, 5rem); }
 .hero-mark { transform: translate3d(calc(var(--px, 0) * 14px), calc(var(--py, 0) * 10px + var(--sy, 0) * -0.18px), 0); }
 .hero-word { transform: translate3d(calc(var(--px, 0) * -8px), calc(var(--sy, 0) * 0.12px), 0); }
 .hero-line, .hero .btn-gold { transform: translateY(calc(var(--sy, 0) * 0.06px)); }
@@ -506,6 +506,7 @@ body:not(.intro) .hero-word:hover span { animation: sheen 1.5s ease-in-out; }
   .soon.wide-desk { grid-column: span 2; }
   .soon.wide .card-media, .soon.wide-desk .card-media { aspect-ratio: auto; flex: 1; min-height: 0; }
   .soon.wide-desk .ico { width: 30%; }
+  .soon.wide-desk .soon-name { font-size: clamp(2.4rem, 5.6vw, 5rem); }
 }
 
 /* Karten mit Tiefe bei echten Produkten */
