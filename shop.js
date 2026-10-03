@@ -29,10 +29,12 @@ const CATEGORIES = [
 // Bundles zuerst prüfen, sonst landet ein "Hoodie Bundle" bei den Hoodies
 const MATCH_ORDER = ['bundles', 'accessoires', 'kopfsache', 'jacken', 'hoodies', 'caps', 'shirts'];
 
+/* Rechtstexte immer auf der eigenen Seite (rechtstexte.html holt den Text aus Shopify, sonst „folgt zum Shop-Start“).
+   Shopifys eigene Seiten leiten bei Passwortschutz auf die Passwort-Seite bzw. zeigen eine weiße 404 (03.10.2026). */
 const POLICY_FALLBACK = {
-  terms: 'https://nightwither.myshopify.com/policies/terms-of-service',
-  refund: 'https://nightwither.myshopify.com/policies/refund-policy',
-  shipping: 'https://nightwither.myshopify.com/policies/shipping-policy'
+  terms: 'rechtstexte.html?t=agb',
+  refund: 'rechtstexte.html?t=widerruf',
+  shipping: 'rechtstexte.html?t=versand'
 };
 const CART_KEY = 'nwu_cart_id';
 
@@ -834,9 +836,7 @@ async function loadProducts() {
   try {
     const data = await gql(PRODUCTS_QUERY);
     const s = data.shop || {};
-    if (s.termsOfService?.url) policies.terms = s.termsOfService.url;
-    if (s.refundPolicy?.url) policies.refund = s.refundPolicy.url;
-    if (s.shippingPolicy?.url) policies.shipping = s.shippingPolicy.url;
+    /* Links bleiben auf rechtstexte.html – die Seite zeigt den Shopify-Text selbst an */
     applyPolicies();
     state.products = data.products.nodes.map((p) => ({ ...p, _cat: categoryOf(p) }));
     state.live = state.products.length > 0;

@@ -40,3 +40,17 @@ dd { overflow-wrap: anywhere; }
 .fuss a { color: var(--ash); margin: 0 8px; text-decoration: none; }
 .fuss a:hover { color: var(--gold); }
 @media (max-width: 480px) { dl { grid-template-columns: 1fr; gap: 0 0; } dt { margin-top: 6px; } .reihe .knopf { flex: 1; } }
+
+/* Rechtstexte-Seite */
+.reiter { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+.reiter a { color: var(--ash); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: .88rem; }
+.reiter a:hover { color: var(--gold); border-color: var(--gold); }
+.reiter a[aria-current="page"] { color: #000; background: var(--gold); border-color: var(--gold); }
+.mitte { text-align: center; margin-top: 14px; }
+.rechtstext h1, .rechtstext h2, .rechtstext h3 { font-family: 'Rajdhani', sans-serif; color: var(--gold); margin: 18px 0 8px; letter-spacing: .03em; }
+.rechtstext h1 { font-size: 1.3rem; } .rechtstext h2 { font-size: 1.15rem; } .rechtstext h3 { font-size: 1rem; }
+.rechtstext p, .rechtstext li { font-size: .92rem; color: #d6d2c9; }
+.rechtstext p { margin: 8px 0; }
+.rechtstext ul, .rechtstext ol { padding-left: 20px; margin: 8px 0; }
+.rechtstext table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: .88rem; }
+.rechtstext td, .rechtstext th { border: 1px solid var(--line); padding: 6px 8px; text-align: left; }
