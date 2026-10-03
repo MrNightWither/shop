@@ -1,0 +1,42 @@
+/* Widerrufs-Seite – gleiche Farben und Schriften wie shop.css, Schriften lokal */
+@font-face { font-family: 'Rajdhani'; font-weight: 700; font-display: swap; src: url('fonts/rajdhani-700.woff') format('woff'); }
+@font-face { font-family: 'Inter'; font-weight: 400; font-display: swap; src: url('fonts/inter-400.woff') format('woff'); }
+@font-face { font-family: 'Inter'; font-weight: 600; font-display: swap; src: url('fonts/inter-600.woff') format('woff'); }
+:root { --black: #000; --panel: #121215; --gold: #c9a84c; --gold-hi: #e8c96d; --blood: #8b1424; --bone: #edeae2; --ash: #9a948a; --line: rgba(237,234,226,.12); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--black); color: var(--bone); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; padding: 32px 16px 56px; }
+.wr { max-width: 620px; margin: 0 auto; }
+.zurueck { color: var(--ash); text-decoration: none; font-size: .9rem; }
+.zurueck:hover { color: var(--gold); }
+.krone { display: block; width: 64px; height: auto; margin: 22px auto 10px; filter: drop-shadow(0 0 16px rgba(201,168,76,.35)); }
+h1 { font-family: 'Rajdhani', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; text-align: center; font-size: 2rem; color: var(--gold); margin-bottom: 18px; }
+h2 { font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: .05em; font-size: 1.25rem; color: var(--gold); margin-bottom: 14px; }
+.karte { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+.karte p + p { margin-top: 10px; }
+.leise { color: var(--ash); font-size: .88rem; }
+a { color: var(--gold); }
+.test { background: rgba(139,20,36,.25); border: 1px dashed #c0392b; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; font-size: .9rem; }
+label { display: block; margin-bottom: 14px; font-weight: 600; font-size: .92rem; }
+label span { color: #e05a5a; }
+label em, label small { font-weight: 400; color: var(--ash); font-style: normal; }
+label small { display: block; font-size: .8rem; }
+input, textarea { display: block; width: 100%; margin-top: 6px; background: #0a0a0d; color: var(--bone); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: inherit; font-weight: 400; }
+input:focus, textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: transparent; }
+.honig { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.knopf { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: .08em; text-transform: uppercase; border-radius: 8px; padding: 12px 22px; cursor: pointer; border: 1px solid transparent; }
+.knopf.rot { background: var(--blood); color: #fff; border-color: #c0392b; display: block; width: 100%; margin-top: 16px; }
+.reihe .knopf.rot { margin-top: 0; width: auto; }
+.knopf.rot:hover { background: #a3182b; }
+.knopf.gold { background: var(--gold); color: #000; }
+.knopf.gold:hover { background: var(--gold-hi); }
+.knopf.leer { background: transparent; color: var(--ash); border-color: var(--line); }
+.knopf:disabled { opacity: .6; cursor: wait; }
+.reihe { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 8px; }
+.fehler { color: #ff9a9a; background: rgba(192,57,43,.15); border-radius: 8px; padding: 8px 12px; margin: 6px 0 10px; font-size: .9rem; }
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin-bottom: 14px; font-size: .92rem; }
+dt { color: var(--ash); }
+dd { overflow-wrap: anywhere; }
+.fuss { text-align: center; margin-top: 28px; font-size: .82rem; }
+.fuss a { color: var(--ash); margin: 0 8px; text-decoration: none; }
+.fuss a:hover { color: var(--gold); }
+@media (max-width: 480px) { dl { grid-template-columns: 1fr; gap: 0 0; } dt { margin-top: 6px; } .reihe .knopf { flex: 1; } }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src https://nwu-anmeldung.nwu-brand.workers.dev; base-uri 'none'; form-action 'none'">
+<title>Vertrag widerrufen · NightWither Shop</title>
+<meta name="description" content="Widerruf deiner Bestellung im NightWither Shop – online in zwei Schritten.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="widerruf.css?v=20261001a">
+</head>
+<body>
+<main class="wr">
+  <a class="zurueck" href="./">← Zurück zum Shop</a>
+  <img class="krone" src="crown.webp" alt="" width="261" height="287">
+  <h1>Vertrag widerrufen</h1>
+  <p id="testhinweis" class="test" hidden>⚠️ <strong>Testbetrieb:</strong> Diese Seite wird gerade getestet. Es wird kein echter Vertrag widerrufen.</p>
+
+  <!-- Schritt 1: Widerrufsbutton -->
+  <section id="s1" class="karte">
+    <p>Du möchtest eine Bestellung aus dem NightWither Shop widerrufen? Das geht hier online in zwei Schritten – einen Grund musst du nicht angeben.</p>
+    <p class="leise">Die Einzelheiten (Frist, Rücksendung, Erstattung) stehen in der <a id="belehrung" href="https://nightwither.myshopify.com/policies/refund-policy">Widerrufsbelehrung</a>.</p>
+    <button type="button" class="knopf rot" id="start">Vertrag widerrufen</button>
+  </section>
+
+  <!-- Schritt 2: Angaben -->
+  <section id="s2" class="karte" hidden>
+    <h2>1. Deine Angaben</h2>
+    <form id="formular" novalidate>
+      <label>Name <span>*</span><input id="name" name="name" autocomplete="name" maxlength="80" required></label>
+      <label>E-Mail-Adresse <span>*</span><small>Hierhin schicken wir die Eingangsbestätigung.</small><input id="email" name="email" type="email" autocomplete="email" maxlength="120" required></label>
+      <label>Bestellnummer <span>*</span><small>Steht in deiner Bestellbestätigung, z. B. #1001.</small><input id="bestellung" name="bestellung" maxlength="40" required></label>
+      <label>Welche Artikel? <em>(optional)</em><small>Leer lassen = die ganze Bestellung.</small><textarea id="artikel" name="artikel" rows="2" maxlength="500"></textarea></label>
+      <label>Nachricht <em>(optional)</em><textarea id="nachricht" name="nachricht" rows="3" maxlength="1000"></textarea></label>
+      <label class="honig" aria-hidden="true">Webseite<input id="website" name="website" tabindex="-1" autocomplete="off"></label>
+      <p class="fehler" id="fehler2" role="alert" hidden></p>
+      <div class="reihe"><button type="button" class="knopf leer" id="abbruch2">Abbrechen</button><button type="submit" class="knopf gold">Weiter zur Bestätigung</button></div>
+    </form>
+  </section>
+
+  <!-- Schritt 3: Bestätigen -->
+  <section id="s3" class="karte" hidden>
+    <h2>2. Widerruf bestätigen</h2>
+    <dl id="zusammenfassung"></dl>
+    <p class="leise">Mit dem Klick auf „Widerruf bestätigen“ widerrufst du den oben genannten Vertrag. Deine Angaben werden zur Bearbeitung des Widerrufs verarbeitet – mehr dazu in der <a href="https://datenschutz.nightwither.de">Datenschutzerklärung</a>.</p>
+    <p class="fehler" id="fehler3" role="alert" hidden></p>
+    <div class="reihe"><button type="button" class="knopf leer" id="zurueck3">Angaben ändern</button><button type="button" class="knopf rot" id="bestaetigen">Widerruf bestätigen</button></div>
+  </section>
+
+  <!-- Schritt 4: Eingang -->
+  <section id="s4" class="karte" hidden>
+    <h2>✅ Dein Widerruf ist eingegangen</h2>
+    <dl id="eingang"></dl>
+    <p>Eine <strong>Eingangsbestätigung per E-Mail</strong> ist unterwegs an <strong id="mailziel"></strong>. Schau bitte auch im Spam-Ordner nach.</p>
+    <p class="leise">Tipp: Mach dir einen Screenshot dieser Seite. Fragen? Schreib an <a href="mailto:nwu.business@nightwither.de">nwu.business@nightwither.de</a> – bitte mit der Vorgangsnummer.</p>
+  </section>
+
+  <footer class="fuss">
+    <a href="https://impressum.nightwither.de">Impressum</a>
+    <a href="https://datenschutz.nightwither.de">Datenschutz</a>
+    <a href="./">Shop</a>
+  </footer>
+</main>
+<script src="widerruf.js?v=20261001a"></script>
+</body>
+</html>
